@@ -10,8 +10,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Leaflet CSS para OpenStreetMap -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfBI87S5d7Nv9kRB4s+v7fP1sJ698aJz=" crossorigin=""/>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -40,11 +38,6 @@
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid #e2e8f0;
-        }
-        .map-instruction {
-            color: #4a5568;
-            font-size: 0.875rem;
-            margin-top: 8px;
         }
         .price-range {
             font-size: 1.5rem;
@@ -143,10 +136,21 @@
                     </div>
                 </div>
 
-                <div>
-                    <label for="map-container" class="block text-sm font-medium text-gray-700">¿Dónde es el servicio?</label>
-                    <div id="map-container" class="h-64 w-full rounded-lg shadow-inner border border-gray-300"></div>
-                    <p class="map-instruction text-center">Arrastra el marcador para ubicar tu dirección aproximada.</p>
+                <div id="location-selectors">
+                    <label for="estado" class="block text-sm font-medium text-gray-700">Estado:</label>
+                    <select id="estado" class="w-full p-2 border border-gray-300 rounded-lg mb-2">
+                        <option value="">Selecciona un estado</option>
+                    </select>
+
+                    <label for="municipio" class="block text-sm font-medium text-gray-700">Alcaldía o Municipio:</label>
+                    <select id="municipio" class="w-full p-2 border border-gray-300 rounded-lg mb-2" disabled>
+                        <option value="">Selecciona un municipio</option>
+                    </select>
+
+                    <label for="colonia" class="block text-sm font-medium text-gray-700">Colonia:</label>
+                    <select id="colonia" class="w-full p-2 border border-gray-300 rounded-lg" disabled>
+                        <option value="">Selecciona una colonia</option>
+                    </select>
                 </div>
                 
                 <div class="flex justify-between">
@@ -225,16 +229,24 @@
     </div>
 
     <!-- Scripts -->
-    <!-- Leaflet JS para OpenStreetMap -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-200w010Y1M3F55tLwP/39G/1lF53R9X3cQnJv1p3uM=" crossorigin=""></script>
     <script>
         // Variables globales
         let currentStep = 1;
         const totalSteps = 3;
         let selectedService = '';
-        let map, marker;
         const clientData = {};
         const serviceData = {};
+
+        const locationData = {
+            'Ciudad de México': {
+                'Álvaro Obregón': ['Jardines del Pedregal', 'San Ángel'],
+                'Coyoacán': ['Del Carmen', 'Copilco']
+            },
+            'Jalisco': {
+                'Guadalajara': ['Centro', 'Providencia'],
+                'Zapopan': ['Chapalita', 'Ciudad del Sol']
+            }
+        };
 
         // Función para cambiar de paso
         function goToStep(stepNumber) {
@@ -295,7 +307,7 @@
             });
         });
 
-        // PASO 2: Manejar carga de fotos y mapa
+        // PASO 2: Manejar carga de fotos y ubicación
         document.getElementById('photo-upload').addEventListener('change', (event) => {
             const previewContainer = document.getElementById('uploaded-previews');
             previewContainer.innerHTML = '';
@@ -318,36 +330,56 @@
             serviceData.photos = event.target.files;
         });
 
-        // Inicializar OpenStreetMap
-        function initMap() {
-            const defaultLocation = [19.4326, -99.1332]; // Lat, Lng de CDMX
-            map = L.map('map-container').setView(defaultLocation, 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+        function initLocationSelectors() {
+            const estadoSelect = document.getElementById('estado');
+            const municipioSelect = document.getElementById('municipio');
+            const coloniaSelect = document.getElementById('colonia');
 
-            marker = L.marker(defaultLocation, {
-                draggable: true
-            }).addTo(map);
+            Object.keys(locationData).forEach(estado => {
+                const opt = document.createElement('option');
+                opt.value = estado;
+                opt.textContent = estado;
+                estadoSelect.appendChild(opt);
+            });
 
-            // Guardar la ubicación inicial
-            serviceData.location = {
-                lat: defaultLocation[0],
-                lng: defaultLocation[1]
-            };
+            estadoSelect.addEventListener('change', () => {
+                const estado = estadoSelect.value;
+                municipioSelect.innerHTML = '<option value="">Selecciona un municipio</option>';
+                coloniaSelect.innerHTML = '<option value="">Selecciona una colonia</option>';
+                coloniaSelect.disabled = true;
 
-            // Escuchar el evento de arrastre del marcador para actualizar la ubicación
-            marker.on('dragend', (event) => {
-                const position = marker.getLatLng();
-                serviceData.location = {
-                    lat: position.lat,
-                    lng: position.lng
-                };
+                if (estado && locationData[estado]) {
+                    Object.keys(locationData[estado]).forEach(municipio => {
+                        const opt = document.createElement('option');
+                        opt.value = municipio;
+                        opt.textContent = municipio;
+                        municipioSelect.appendChild(opt);
+                    });
+                    municipioSelect.disabled = false;
+                } else {
+                    municipioSelect.disabled = true;
+                }
+            });
+
+            municipioSelect.addEventListener('change', () => {
+                const estado = estadoSelect.value;
+                const municipio = municipioSelect.value;
+                coloniaSelect.innerHTML = '<option value="">Selecciona una colonia</option>';
+                if (municipio && locationData[estado] && locationData[estado][municipio]) {
+                    locationData[estado][municipio].forEach(colonia => {
+                        const opt = document.createElement('option');
+                        opt.value = colonia;
+                        opt.textContent = colonia;
+                        coloniaSelect.appendChild(opt);
+                    });
+                    coloniaSelect.disabled = false;
+                } else {
+                    coloniaSelect.disabled = true;
+                }
             });
         }
 
-        // Llamar a la función de inicialización del mapa cuando la página esté lista
-        document.addEventListener('DOMContentLoaded', initMap);
+        document.addEventListener('DOMContentLoaded', initLocationSelectors);
 
         // PASO 3: Manejar la selección del método de contacto
         document.querySelectorAll('.contact-button').forEach(button => {
@@ -383,6 +415,11 @@
             serviceData.urgency = document.querySelector('input[name="urgency"]:checked').value;
             serviceData.description = document.getElementById('problem-description').value;
             serviceData.contactMethod = method;
+            serviceData.location = {
+                estado: document.getElementById('estado').value,
+                municipio: document.getElementById('municipio').value,
+                colonia: document.getElementById('colonia').value
+            };
 
             console.log('Datos enviados:', { clientData, serviceData });
             
