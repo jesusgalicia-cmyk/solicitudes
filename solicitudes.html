@@ -264,6 +264,14 @@
             const newStepSection = document.getElementById(`step${stepNumber}`);
             if (newStepSection) {
                 newStepSection.classList.add('active');
+                if (stepNumber === 2) {
+                    // Asegurar que el mapa se muestre correctamente
+                    if (!map) {
+                        initMap();
+                    } else {
+                        setTimeout(() => map.invalidateSize(), 0);
+                    }
+                }
             } else if (stepNumber === 4) {
                 document.getElementById('step-confirmation').classList.add('active');
             }
