@@ -264,6 +264,12 @@
             const newStepSection = document.getElementById(`step${stepNumber}`);
             if (newStepSection) {
                 newStepSection.classList.add('active');
+                if (stepNumber === 2 && typeof map !== 'undefined') {
+                    // Asegurar que el mapa se redimensione correctamente al mostrarlo
+                    setTimeout(() => {
+                        map.invalidateSize();
+                    }, 0);
+                }
             } else if (stepNumber === 4) {
                 document.getElementById('step-confirmation').classList.add('active');
             }
