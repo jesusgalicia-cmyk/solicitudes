@@ -77,38 +77,26 @@
             <div id="step1" class="step-section active">
                 <h2 class="text-xl font-semibold mb-6 text-center">¡Hola! Para ayudarte mejor, dinos qué tipo de servicio requieres:</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <button class="service-button bg-blue-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-blue-600 transition-colors" data-service="Plomería">
-                        <span class="text-4xl">💧</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Plomería</span>
-                    </button>
-                    <button class="service-button bg-orange-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-orange-600 transition-colors" data-service="Electricidad">
-                        <span class="text-4xl">⚡</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Electricidad</span>
-                    </button>
-                    <button class="service-button bg-gray-600 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-gray-700 transition-colors" data-service="Herrería y Soldadura">
-                        <span class="text-4xl">🛠️</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Herrería y Soldadura</span>
-                    </button>
-                    <button class="service-button bg-yellow-600 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-yellow-700 transition-colors" data-service="Carpintería">
-                        <span class="text-4xl">🪚</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Carpintería y Mobiliario</span>
-                    </button>
-                    <button class="service-button bg-purple-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-purple-600 transition-colors" data-service="Pintura y Acabados">
-                        <span class="text-4xl">🎨</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Pintura y Acabados</span>
-                    </button>
-                    <button class="service-button bg-teal-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-teal-600 transition-colors" data-service="Instalación de Equipos">
-                        <span class="text-4xl">🖥️</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Instalación de Equipos y Tecnología</span>
-                    </button>
-                    <button class="service-button bg-green-600 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-green-700 transition-colors" data-service="Jardinería y Exteriores">
-                        <span class="text-4xl">🌳</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Jardinería y Exteriores</span>
-                    </button>
-                    <button class="service-button bg-indigo-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-indigo-600 transition-colors" data-service="Mantenimiento General">
-                        <span class="text-4xl">🧼</span>
-                        <span class="mt-2 text-sm md:text-base font-medium text-center">Mantenimiento General</span>
-                    </button>
+<button class="service-button bg-blue-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-blue-600 transition-colors" data-service="Mantenimiento Hogar">
+    <span class="text-4xl">🏠</span>
+    <span class="mt-2 text-sm md:text-base font-medium text-center">Mantenimiento Hogar</span>
+</button>
+<button class="service-button bg-orange-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-orange-600 transition-colors" data-service="Mantenimiento Oficina">
+    <span class="text-4xl">🏢</span>
+    <span class="mt-2 text-sm md:text-base font-medium text-center">Mantenimiento Oficina</span>
+</button>
+<button class="service-button bg-green-600 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-green-700 transition-colors" data-service="Mantenimiento Pequeño Negocio">
+    <span class="text-4xl">🏪</span>
+    <span class="mt-2 text-sm md:text-base font-medium text-center">Mantenimiento Pequeño Negocio</span>
+</button>
+<button class="service-button bg-teal-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-teal-600 transition-colors" data-service="Reparación de Cómputo">
+    <span class="text-4xl">💻</span>
+    <span class="mt-2 text-sm md:text-base font-medium text-center">Reparación de Cómputo</span>
+</button>
+<button class="service-button bg-purple-500 text-white p-6 rounded-xl flex flex-col items-center justify-center shadow-md hover:bg-purple-600 transition-colors" data-service="Mantenimiento de Cómputo">
+    <span class="text-4xl">🖥️</span>
+    <span class="mt-2 text-sm md:text-base font-medium text-center">Mantenimiento de Cómputo</span>
+</button>
                 </div>
             </div>
 
@@ -213,13 +201,24 @@
                     </div>
 
                     <div id="display-contact-message" class="text-md text-gray-700 mb-6">
+                    <p class="text-md text-gray-700 mb-4">Tu número de seguimiento es: <span id="display-request-id" class="font-semibold"></span></p>
                         <!-- El mensaje dinámico se inserta aquí -->
                     </div>
 
                     <a href="/" class="inline-block bg-green-500 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors">Volver a la Página Principal</a>
+                    <button onclick="showRequests()" class="ml-4 text-blue-600 underline">Ver mis solicitudes</button>
                 </div>
             </div>
 
+
+            <!-- SECCIÓN: Mis Solicitudes -->
+            <div id="requests-section" class="step-section">
+                <h2 class="text-xl font-semibold mb-4 text-center">Mis Solicitudes Registradas</h2>
+                <div id="requests-list" class="space-y-4"></div>
+                <div class="text-center mt-6">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors" onclick="goToStep(1)">Nueva Solicitud</button>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -347,7 +346,7 @@
         }
 
         // Llamar a la función de inicialización del mapa cuando la página esté lista
-        document.addEventListener('DOMContentLoaded', initMap);
+        document.addEventListener('DOMContentLoaded', function(){ initMap(); loadRequests(); });
 
         // PASO 3: Manejar la selección del método de contacto
         document.querySelectorAll('.contact-button').forEach(button => {
@@ -408,6 +407,9 @@
                 contactMessage = `Recibirás un correo nuestro a <span class="font-semibold">${contactDetail}</span> en las próximas 2 horas hábiles con la información y este presupuesto. Por favor, revisa también tu carpeta de spam.`;
             }
             document.getElementById('display-contact-message').innerHTML = contactMessage;
+                const requestId = storeRequest();
+                document.getElementById("display-request-id").textContent = requestId;
+                loadRequests();
 
             goToStep(4);
         }
@@ -415,16 +417,55 @@
         // Función simulada para obtener el presupuesto estimado
         function getEstimatedPrice(serviceType) {
             const prices = {
-                'Plomería': { min: 450, max: 900 },
-                'Electricidad': { min: 300, max: 800 },
-                'Herrería y Soldadura': { min: 600, max: 1500 },
-                'Carpintería': { min: 500, max: 1200 },
-                'Pintura y Acabados': { min: 400, max: 1000 },
-                'Instalación de Equipos': { min: 250, max: 750 },
-                'Jardinería y Exteriores': { min: 350, max: 850 },
-                'Mantenimiento General': { min: 200, max: 600 }
+                'Mantenimiento Hogar': { min: 300, max: 800 },
+                'Mantenimiento Oficina': { min: 400, max: 900 },
+                'Mantenimiento Peque\u00f1o Negocio': { min: 400, max: 1000 },
+                'Reparaci\u00f3n de C\u00f3mputo': { min: 350, max: 900 },
+                'Mantenimiento de C\u00f3mputo': { min: 300, max: 800 }
             };
-            return prices[serviceType] || { min: 200, max: 1000 };
+            return prices[serviceType] || { min: 300, max: 900 };
+        }
+
+        // Guardar solicitud en localStorage y obtener ID
+        function storeRequest() {
+            const requests = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
+            const id = Date.now();
+            const newRequest = {
+                id,
+                client: { ...clientData },
+                service: { ...serviceData },
+                status: 'En revisión',
+                createdAt: new Date().toISOString()
+            };
+            requests.push(newRequest);
+            localStorage.setItem('serviceRequests', JSON.stringify(requests));
+            return id;
+        }
+
+        // Mostrar solicitudes guardadas en la sección correspondiente
+        function loadRequests() {
+            const requests = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
+            const list = document.getElementById('requests-list');
+            list.innerHTML = '';
+            if (requests.length === 0) {
+                list.innerHTML = '<p class="text-gray-600">No hay solicitudes registradas.</p>';
+                return;
+            }
+            requests.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'border rounded-lg p-4 bg-white shadow';
+                item.innerHTML = `
+                    <p class="font-semibold">ID: ${r.id}</p>
+                    <p>Servicio: ${r.service.type}</p>
+                    <p>Urgencia: ${r.service.urgency}</p>
+                    <p>Estado: ${r.status}</p>
+                `;
+                list.appendChild(item);
+            });
+        }
+        function showRequests() {
+            document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('requests-section').classList.add('active');
         }
     </script>
 </body>
